@@ -1,0 +1,10 @@
+name: Heal
+description: A plugin to heal yourself or your friends.
+version: 1.0
+author: SaVaGeCrEePeR28
+main: me.savagecreeper28.main.Main
+
+commands:
+  heal:
+    description: Heal yourself or other people.
+    usage: /<command>
