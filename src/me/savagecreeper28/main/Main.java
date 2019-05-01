@@ -60,63 +60,78 @@ public class Main extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        // Define the Player
-        Player p = (Player)sender;
+        // Look if the player types "/heal"
+        if(command.getName().equalsIgnoreCase("heal")){
 
-        // Define the args. If they are longer then the given args, then return a message.
-        if(args.length == 0){
+            // Define the Player
+            Player p = (Player)sender;
 
-            // Check if the player has permissions. If not, return a message
-            if(p.hasPermission("this.heal.command.use")){
+            // Look if the player is a player. If not, return a message.
+            if(sender instanceof Player){
 
-                // Set the health and hunger of the player to the maximum. And send a message...
-                p.setHealth(20);
-                p.setFoodLevel(20);
-                p.sendMessage(this.prefix + this.getConfig().getString("self_healed"));
+                // Check the args.
+                if(args.length == 0){
 
-            }else{
+                    // Check if the player has permissions. If not, return a message
+                    if(p.hasPermission("this.heal.command.use")){
 
-                // Return the message...
-                p.sendMessage(this.prefix + this.getConfig().getString("no_permissions"));
+                        // Set the health and hunger of the player to the maximum. And send a message...
+                        p.setHealth(20);
+                        p.setFoodLevel(20);
+                        p.sendMessage(this.prefix + this.getConfig().getString("self_healed"));
 
-            }
+                    }else{
 
-        }else if(args.length == 1){
+                        // Return the message...
+                        p.sendMessage(this.prefix + this.getConfig().getString("no_permissions"));
 
-            // Define the target player.
-            // Add a deprecation warning.
-            @SuppressWarnings("deprecation") Player target = Bukkit.getPlayer(args[0]);
+                    }
 
-            // Check if the player has permissions. If not, return a message.
-            if(p.hasPermission("this.heal.command.use.on.other")){
+                }else if(args.length == 1){
 
-                // Look if the player is online. If not, return a message...
-                if(target != null){
+                    // Define the target player.
+                    // Add a deprecation warning.
+                    @SuppressWarnings("deprecation") Player target = Bukkit.getPlayer(args[0]);
 
-                    // Set the health and hunger from the target to the maximum. Return a message to both player.
-                    target.setHealth(20);
-                    target.setFoodLevel(20);
-                    target.sendMessage(this.prefix + this.getConfig().getString("self_healed"));
-                    p.sendMessage(this.prefix + this.getConfig().getString("other_healed"));
+                    // Check if the player has permissions. If not, return a message.
+                    if(p.hasPermission("this.heal.command.use.on.other")){
+
+                        // Look if the player is online. If not, return a message...
+                        if(target != null){
+
+                            // Set the health and hunger from the target to the maximum. Return a message to both player.
+                            target.setHealth(20);
+                            target.setFoodLevel(20);
+                            target.sendMessage(this.prefix + this.getConfig().getString("self_healed"));
+                            p.sendMessage(this.prefix + this.getConfig().getString("other_healed") + target.getName());
+
+                        }else{
+
+                            // Return a message..
+                            p.sendMessage(this.prefix + this.getConfig().getString("player_not_found"));
+
+                        }
+
+                    }else{
+
+                        // Return the message..
+                        p.sendMessage(this.prefix + this.getConfig().getString("no_permissions"));
+
+                    }
 
                 }else{
 
-                    // Return a message..
-                    p.sendMessage(this.prefix + this.getConfig().getString("player_not_found"));
+                    // Return a message.
+                    p.sendMessage(this.prefix + this.getConfig().getString("false_usage"));
 
                 }
 
             }else{
 
-                // Return the message..
-                p.sendMessage(this.prefix + this.getConfig().getString("no_permissions"));
+                // Return the message.
+                sender.sendMessage(prefix + "§cYou aren't a player! Please execute this command ingame!");
 
             }
-
-        }else{
-
-            // Return a message.
-            p.sendMessage(this.prefix + this.getConfig().getString("false_usage"));
 
         }
 
